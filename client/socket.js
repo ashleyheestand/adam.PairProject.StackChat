@@ -9,7 +9,6 @@ socket.on('connect', () => {
   socket.on('new-message', message => {
     store.dispatch(getMessage(message));
   });
-
 });
 
 export default socket;
