@@ -7,11 +7,14 @@ import axios from 'axios';
 export const initialState = {
   messages: [],
   channels: [],
+  newMessage: '',
 };
 
 //Action Types
 const GOT_MESSAGES_FROM_SERVER = 'GOT_MESSAGES_FROM_SERVER';
 const GOT_CHANNELS_FROM_SERVER = 'GOT_CHANNELS_FROM_SERVER';
+const WRITE_MESSAGE = 'WRITE_MESSAGE';
+const GOT_NEW_MESSAGE_FROM_SERVER = 'GOT_NEW_MESSAGE_FROM_SERVER';
 
 //Action Creators
 //Messages is the payload of the action
@@ -24,6 +27,16 @@ export const gotChannelsFromServer = (messages, channels) => ({
   type: GOT_CHANNELS_FROM_SERVER,
   messages,
   channels,
+});
+
+export const writeMessage = inputContent => ({
+  type: WRITE_MESSAGE,
+  newMessage: inputContent,
+});
+
+export const gotNewMessageFromServer = message => ({
+  type: GOT_NEW_MESSAGE_FROM_SERVER,
+  message,
 });
 
 export const fetchMessages = () => {
@@ -56,6 +69,10 @@ const reducer = (state = initialState, action) => {
     case GOT_CHANNELS_FROM_SERVER:
       let intermediary = { ...state, messages: action.messages };
       return { ...intermediary, channels: action.channels };
+    case WRITE_MESSAGE:
+      return { ...state, newMessage: action.newMessage };
+    case GOT_NEW_MESSAGE_FROM_SERVER:
+      return { ...state, messages: [...state.messages, action.message] };
     default:
       return state;
   }
