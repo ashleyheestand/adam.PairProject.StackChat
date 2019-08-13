@@ -24,7 +24,7 @@ export class ChannelList extends Component {
   render() {
     const channels = this.state.channels;
     const messages = this.state.messages;
-    console.log(this.state);
+    // console.log(this.state);
     return (
       <ul>
         {channels.map(channel => (

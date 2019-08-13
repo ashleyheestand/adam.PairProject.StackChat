@@ -61,6 +61,15 @@ export const fetchChannels = () => {
   };
 };
 
+export const postNewMessage = message => {
+  return async dispatch => {
+    const response = await axios.post('/api/messages', message);
+    const newMessage = response.data;
+    const action = gotNewMessageFromServer(newMessage);
+    dispatch(action);
+  };
+};
+
 //Reducer
 const reducer = (state = initialState, action) => {
   switch (action.type) {
