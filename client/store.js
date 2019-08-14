@@ -2,6 +2,7 @@ import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import thunk from 'redux-thunk';
 import axios from 'axios';
+import socket from './socket';
 
 //Initial State
 export const initialState = {
@@ -67,6 +68,7 @@ export const postNewMessage = message => {
     const newMessage = response.data;
     const action = gotNewMessageFromServer(newMessage);
     dispatch(action);
+    socket.emit('new-message', newMessage);
   };
 };
 
@@ -81,7 +83,11 @@ const reducer = (state = initialState, action) => {
     case WRITE_MESSAGE:
       return { ...state, newMessage: action.newMessage };
     case GOT_NEW_MESSAGE_FROM_SERVER:
-      return { ...state, messages: [...state.messages, action.message] };
+      return {
+        ...state,
+        messages: [...state.messages, action.message],
+        newMessage: '',
+      };
     default:
       return state;
   }
